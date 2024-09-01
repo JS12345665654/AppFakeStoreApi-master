@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFakeStore.Views.UserListaPage"
+             xmlns:vm="clr-namespace:AppFakeStore.ViewModels"
+             xmlns:model="clr-namespace:AppFakeStore.Models"
+             xmlns:local="clr-namespace:AppFakeStore.Utils"
+             x:DataType="vm:UserListaViewModel"
+             Title="{Binding Title}"
+             Background="#00643b">
+
+    <RefreshView Command="{Binding GetUsersCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView Margin="10">
+            <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Users}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding UserSeleccionado}"
+                        SelectionChangedCommand="{Binding GoToDetailCommand}">
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="100">
+                        <Image Source="not_found.jpg" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:User">
+                        <StackLayout>
+                            <Frame BackgroundColor="Blue" CornerRadius="10" Padding="0" Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="user_solid.png" Grid.Column="0" WidthRequest="35" HeightRequest="35" Margin="10,0,0,0"/>
+                                    <BoxView Grid.Column="1" WidthRequest="4" Color="White" VerticalOptions="Fill" Margin="10,0,5,0"/>
+                                    <StackLayout Grid.Column="2" VerticalOptions="Center" Margin="0,10,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="Nombre:" Grid.Column="0" HorizontalOptions="End" Padding="10,0"/>
+                                            <Label Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center" Grid.ColumnSpan="3">
+                                                <Label.Text>
+                                                    <MultiBinding StringFormat="{}{0}, {1}">
+                                                        <Binding Path="Name.Lastname" Converter="{StaticResource UpperCaseConverter}"/>
+                                                        <Binding Path="Name.Firstname" Converter="{StaticResource CapitalizeFirstLetterConverter}"/>
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
+                                        </Grid>
+
+                                        <Grid Padding="0,10,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="Email:" Grid.Column="0" HorizontalOptions="End" Padding="10,0"/>
+                                            <Label Text="{Binding Email}" Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        </Grid>
+                                        <Grid Padding="0,10,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="Phone:" Grid.Column="0" HorizontalOptions="End" Padding="10,0"/>
+                                            <Label Text="{Binding Phone}" Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+
+                        </StackLayout>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>    
